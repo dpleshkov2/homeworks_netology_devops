@@ -18,7 +18,7 @@
 
 *Приведите скриншот systemctl status memcached, где будет видно, что memcached запущен.*
 
-![memcached_started.png][/assets/11-01/images/memcached_started.png]
+![memcached_started.png](/assets/11-01/images/memcached_started.png)
 
 ---
 
