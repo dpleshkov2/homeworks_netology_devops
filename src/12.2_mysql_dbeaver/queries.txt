@@ -1,2 +1,5 @@
 CREATE USER 'sys_temp'@'localhost' IDENTIFIED BY 'mypwd';
+SELECT USER FROM mysql.user;
 GRANT ALL PRIVILEGES ON *.* TO 'sys_temp'@'localhost' WITH GRANT OPTION;
+SELECT USER FROM mysql.user;
+
