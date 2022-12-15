@@ -11,17 +11,40 @@
 
 1.1 Необходимо восстанавливать данные в полном объеме за предыдущий день.
 
+```
+Предлагаю установить еженедельный Full backup и ежедневный (в самом конце дня) Differential Backup или Incremental Backup
+```
+
 1.2 Необходимо восстанавливать данные за час до предполагаемой поломки.
+
+```
+Предлагаю установить ежедневный Full backup и ежечасный Differential Backup или Incremental Backup
+```
+
 
 1.3* Возможен ли кейс, когда при поломке базы происходило моментальное переключение на работающую/починеную БД?
 
-*Приведите ответ в свободной форме.*
+```
+Да, это возможно используя Репликацию.
+```
 
 ---
 
 ### Задание 2. PostgreSQL
 
 2.1 С помощью официальной документации приведите пример команды резервирования данных и восстановления БД (pgdump/pgrestore).
+
+```
+Dump a database called mydb into a custom-format dump file:
+$ pg_dump -Fc mydb > db.dump
+
+To drop the database and recreate it from the dump:
+$ dropdb mydb
+$ pg_restore -C -d postgres db.dump
+The database named in the -d switch can be any database existing in the cluster; 
+pg_restore only uses it to issue the CREATE DATABASE command for mydb. 
+With -C, data is always restored into the database name that appears in the dump file.
+```
 
 2.1* Возможно ли автоматизировать этот процесс? Если да, то как?
 
