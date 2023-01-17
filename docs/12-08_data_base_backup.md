@@ -55,6 +55,22 @@ With -C, data is always restored into the database name that appears in the dump
 ### Задание 3. MySql
 
 3.1 С помощью официальной документации приведите пример команды инкрементного резервного копирования базы данных MySql. 
+```
+Конфиг-файл /home/dbadmin/my.cnf содержит набор опций, включая такие:
+--user=dbadmin --password=dbadminpwd --port=3306
+
+Полный бэкап:
+mysqlbackup --defaults-file=/home/dbadmin/my.cnf \
+  --backup-dir=/home/dbadmin/backups/week15 \
+  backup
+  
+Инкрементный бэкап:
+mysqlbackup --defaults-file=/home/dbadmin/my.cnf \
+  --incremental --incremental-base=dir:/home/dbadmin/backups/week15 \
+  --incremental-backup-dir=/home/dbadmin/backups/week15_thursday \
+   backup
+ 
+```
 
 3.1* В каких случаях использование реплики будет давать преимущество по сравнению с обычным резервным копированием?
 
