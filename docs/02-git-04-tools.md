@@ -56,21 +56,44 @@ dd01a35078 Update CHANGELOG.md
 
 5. Найдите коммит в котором была создана функция `func providerSource`, ее определение в коде выглядит 
 так `func providerSource(...)` (вместо троеточия перечислены аргументы).
+```
+dpleshkov@debian:~/github/tmp/terraform-repo$ git log -S'func providerSource(' --oneline
+8c928e8358 main: Consult local directories as potential mirrors of providers
+```
 
 6. Найдите все коммиты в которых была изменена функция `globalPluginDirs`.
+```
+dpleshkov@debian:~/github/tmp/terraform-repo$ git grep globalPluginDirs
+commands.go:            GlobalPluginDirs: globalPluginDirs(),
+commands.go:    helperPlugins := pluginDiscovery.FindPlugins("credentials", globalPluginDirs())
+internal/command/cliconfig/config_unix.go:              // FIXME: homeDir gets called from globalPluginDirs during init, before
+plugins.go:// globalPluginDirs returns directories that should be searched for
+plugins.go:func globalPluginDirs() []string {
+dpleshkov@debian:~/github/tmp/terraform-repo$ git log -L :globalPluginDirs:plugins.go | grep commit
+commit 78b12205587fe839f10d946ea3fdc06719decb05
+commit 52dbf94834cb970b510f2fba853a5b49ad9b1a46
+commit 41ab0aef7a0fe030e84018973a64135b11abcd70
+commit 66ebff90cdfaa6938f26f908c7ebad8d547fea17
+commit 8364383c359a6b738a436d1b7745ccdce178df47
+```
 
 7. Кто автор функции `synchronizedWriters`? 
 
-*В качестве решения ответьте на вопросы и опишите каким образом эти ответы были получены*
+Ответ: Martin Atkins
+```
+dpleshkov@debian:~/github/tmp/terraform-repo$ git log -S'synchronizedWriters(' --pretty=short
+commit bdfea50cc85161dea41be0fe3381fd98731ff786
+Author: James Bardin <j.bardin@gmail.com>
 
----
+    remove unused
 
-### Правила приема домашнего задания
+commit fd4f7eb0b935e5a838810564fd549afe710ae19a
+Author: James Bardin <j.bardin@gmail.com>
 
-В личном кабинете отправлена ссылка на .md файл в вашем репозитории.
+    remove prefixed io
 
-### Критерии оценки
+commit 5ac311e2a91e381e2f52234668b49ba670aa0fe5
+Author: Martin Atkins <mart@degeneration.co.uk>
 
-Зачет - выполнены все задания, ответы даны в развернутой форме, приложены соответствующие скриншоты и файлы проекта, в выполненных заданиях нет противоречий и нарушения логики.
-
-На доработку - задание выполнено частично или не выполнено, в логике выполнения заданий есть противоречия, существенные недостатки. 
+    main: synchronize writes to VT100-faker on Windows
+```
