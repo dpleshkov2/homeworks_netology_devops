@@ -43,7 +43,11 @@ push, полагаю, обеспечивает меньшую сетевую н�
 - [Terraform](https://github.com/netology-code/devops-materials/blob/master/README.md)
 - Ansible
 
-*Приложить вывод команд установленных версий каждой из программ, оформленный в markdown.*
+![VirtualBox](./assets/vbox_version.png)
+![Vagrant](./assets/vgrant_version.png)
+![Terraform](./assets/terraform_version.png)
+![Ansible](./assets/ansible_version.png)
+
 
 ## Задача 4 
 
@@ -54,6 +58,8 @@ push, полагаю, обеспечивает меньшую сетевую н�
 ```
 docker ps
 ```
+![Practical_part](./assets/vagrant_ssh-docker.png)
+
 Vagrantfile из лекции  и код ansible находятся в [папке](https://github.com/netology-code/virt-homeworks/tree/virt-11/05-virt-02-iaac/src).
 
 Примечание! Если Vagrant выдает вам ошибку:
