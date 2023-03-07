@@ -11,7 +11,7 @@ resource "yandex_compute_instance" "node01" {
 
   boot_disk {
     initialize_params {
-      image_id    = "${var.centos-7-base}"
+      image_id    = "${var.ubuntu-2004-base}"
       name        = "root-node01"
       type        = "network-nvme"
       size        = "50"
@@ -24,6 +24,6 @@ resource "yandex_compute_instance" "node01" {
   }
 
   metadata = {
-    ssh-keys = "centos:${file("~/.ssh/id_rsa.pub")}"
+    ssh-keys = "ubuntu:${file("~/.ssh/id_rsa.pub")}"
   }
 }
