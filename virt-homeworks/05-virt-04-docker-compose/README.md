@@ -181,6 +181,10 @@ internal_ip_address_node01_yandex_cloud = "192.168.101.25"
 Используйте ansible код в директории ([src/ansible](https://github.com/netology-group/virt-homeworks/tree/virt-11/05-virt-04-docker-compose/src/ansible))
 
 Для получения зачета вам необходимо предоставить вывод команды "docker ps" , все контейнеры, описанные в ([docker-compose](https://github.com/netology-group/virt-homeworks/blob/virt-11/05-virt-04-docker-compose/src/ansible/stack/docker-compose.yaml)),  должны быть в статусе "Up".
+```
+Ответ:
+```
+![my_docker-ps.png](./assets/my_docker-ps.png)
 
 ## Задача 4
 
@@ -194,6 +198,12 @@ internal_ip_address_node01_yandex_cloud = "192.168.101.25"
 <p align="center">
   <img width="1200" height="600" src="./assets/yc_02.png">
 </p>
+
+```
+Ответ:
+```
+![my_vminstance.png](./assets/my_vminstance.png)
+![my_grfana.png](./assets/my_grfana.png)
 
 ## Задача 5 (*)
 
