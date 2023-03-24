@@ -1,0 +1,9 @@
+[centos@node01 ~]$ sudo docker swarm update --autolock=true
+Swarm updated.
+To unlock a swarm manager after it restarts, run the `docker swarm unlock`
+command and provide the following key:
+
+    SWMKEY-1-0GnC203wEApIFq0cqXQYC2Y4czObljhJaawawtGSwzw
+
+Please remember to store this key in a password manager, since without it you
+will not be able to restart the manager.
