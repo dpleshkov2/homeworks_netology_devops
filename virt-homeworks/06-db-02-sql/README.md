@@ -11,6 +11,35 @@
 в который будут складываться данные БД и бэкапы.
 
 Приведите получившуюся команду или docker-compose манифест.
+```
+dpleshkov@debian:~/github/hwrk/virt-homeworks/06-db-02-sql/src$ cat docker-compose.yml 
+version: "3"
+services:
+  netology-db:
+    image: postgres:12 # Образ, который мы будем использовать
+    container_name: pleshkovdp-postgres-db # Имя, которым будет называться наш контейнер
+    ports: # Порты, которые мы пробрасываем с нашего докер сервера внутрь контейнера
+      - 5432:5432
+    volumes: # Папки, которые мы пробросим с докер сервера внутрь контейнера
+      - ./pg_data:/var/lib/postgresql/data/pgdata
+      - ./pg_backup:/var/lib/postgresql/backups
+    environment: # Переменные среды
+      POSTGRES_PASSWORD: pleshkovdp12!3!! # Задаём пароль от пользователя postgres
+      POSTGRES_DB: pleshkovdp_db # БД которая сразу же будет создана
+      PGDATA: /var/lib/postgresql/data/pgdata # Путь внутри контейнера, где будет папка pgdata
+    networks:
+      pleshkovdp-my-netology-hw:
+        ipv4_address: 172.22.0.2
+    restart: always # Режим перезапуска контейнера. Контейнер всегда будет перезапускаться
+
+networks:
+  pleshkovdp-my-netology-hw:
+    driver: bridge
+    ipam:
+      config:
+      - subnet: 172.22.0.0/24
+```
+
 
 ## Задача 2
 
@@ -37,6 +66,33 @@
 - описание таблиц (describe)
 - SQL-запрос для выдачи списка пользователей с правами над таблицами test_db
 - список пользователей с правами над таблицами test_db
+
+```
+Использованные команды:
+sudo docker exec -it b33b3d13ee5c /bin/bash
+psql -U postgres
+CREATE USER "test-admin-user" WITH PASSWORD '1';
+CREATE DATABASE test_db;
+CREATE USER "test-simple-user" WITH PASSWORD '1';
+\l+
+CREATE TABLE IF NOT EXISTS orders (
+ id serial PRIMARY KEY,
+ наименование text,
+ цена integer
+ );
+CREATE TABLE IF NOT EXISTS clients (
+ id serial PRIMARY KEY,
+ фамилия text,
+ "страна проживания" text, 
+ заказ integer,
+ FOREIGN KEY (заказ) REFERENCES orders (id)
+);
+\dt+
+GRANT ALL ON DATABASE test_db TO "test-admin-user";
+GRANT SELECT, INSERT, UPDATE, DELETE ON table orders, clients TO "test-simple-user";
+
+```
+
 
 ## Задача 3
 
