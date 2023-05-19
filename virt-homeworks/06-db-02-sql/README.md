@@ -74,7 +74,6 @@ psql -U postgres
 CREATE USER "test-admin-user" WITH PASSWORD '1';
 CREATE DATABASE test_db;
 CREATE USER "test-simple-user" WITH PASSWORD '1';
-\l+
 CREATE TABLE IF NOT EXISTS orders (
  id serial PRIMARY KEY,
  наименование text,
@@ -87,12 +86,26 @@ CREATE TABLE IF NOT EXISTS clients (
  заказ integer,
  FOREIGN KEY (заказ) REFERENCES orders (id)
 );
-\dt+
 GRANT ALL ON DATABASE test_db TO "test-admin-user";
-GRANT SELECT, INSERT, UPDATE, DELETE ON table orders, clients TO "test-simple-user";
-
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE orders, clients TO "test-simple-user";
+GRANT ALL ON TABLE orders, clients TO "test-admin-user";
+\l+
+\d+
+\d+ clients
+\d+ orders
+SELECT grantee, string_agg(privilege_type, ', ') AS privileges
+ FROM information_schema.role_table_grants 
+ WHERE table_name='orders'   
+ GROUP BY grantee;
+SELECT grantee, string_agg(privilege_type, ', ') AS privileges
+ FROM information_schema.role_table_grants 
+ WHERE table_name='clients'   
+ GROUP BY grantee;
 ```
-
+**Ответ:**
+![Список БД после выполнения](assets/task2_tables.png)
+![Описание таблиц](assets/tables_description.png)
+![Список пользователей с правами над таблицами test_db](assets/users_privelegies.png)
 
 ## Задача 3
 
