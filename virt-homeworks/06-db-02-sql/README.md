@@ -68,7 +68,7 @@ networks:
 - список пользователей с правами над таблицами test_db
 
 ```
-Использованные команды:
+Использованные запросы:
 sudo docker exec -it b33b3d13ee5c /bin/bash
 psql -U postgres
 CREATE USER "test-admin-user" WITH PASSWORD '1';
@@ -136,6 +136,18 @@ SELECT grantee, string_agg(privilege_type, ', ') AS privileges
 - приведите в ответе:
     - запросы 
     - результаты их выполнения.
+
+```
+Использованные запросы:
+INSERT INTO orders VALUES (1, 'Шоколад', 10);
+INSERT INTO orders VALUES (DEFAULT, 'Принтер', 3000);
+INSERT INTO orders VALUES (DEFAULT, 'Книга', 500), (DEFAULT, 'Монитор', 7000), (DEFAULT, 'Гитара', 4000);
+SELECT * FROM orders;
+INSERT INTO clients VALUES (DEFAULT, 'Иванов Иван Иванович', 'USA');
+INSERT INTO clients VALUES (DEFAULT, 'Петров Петр Петрович', 'Canada'), (DEFAULT, 'Иоганн Себастьян Бах', 'Japan'), (DEFAULT, 'Ронни Джеймс Дио', 'Russia'), (DEFAULT, 'Ritchie Blackmore', 'Russia');
+SELECT * FROM clients;
+```
+![Результат выполнения запросов](assets/Task3_result.png)
 
 ## Задача 4
 
