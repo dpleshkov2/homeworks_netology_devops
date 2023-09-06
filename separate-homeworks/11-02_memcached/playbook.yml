@@ -1,0 +1,98 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+
+  - name: Ensure that nano editor is installed.
+    apt: name=nano state=present
+
+  - name: Install memcached
+    apt: name=memcached state=present
+
+  # - name: "Delete /var/www/html folder"
+  #   ansible.builtin.file:
+  #     path: "/var/www/html"
+  #     state: "absent"
+
+  # - name: "Copy our lending to /var/www/html folder"
+  #   ansible.builtin.copy:
+  #     src: "files/html"
+  #     dest: "/var/www/"
+  #     owner: "vagrant"
+  #     group: "vagrant"
+  #     mode: "0644"
+
+  - name: memcached systemd
+    systemd:
+      name: memcached
+      enabled: yes
+      state: started
+
+  - name: Change ssh config
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      regexp: '^PasswordAuthentication'
+      line: PasswordAuthentication yes
+    notify:
+      - Restart sshd
+  - name: 
+    debug:
+      msg: "{{ ansible_facts.all_ipv4_addresses[1] }}"
+
+  handlers:
+  - name: Restart sshd
+    service:
+      name: sshd
+      state: restarted
+
+# - hosts: net1
+#   become: yes
+#   tasks:
+#   - name: Copy nginx config file for net1 
+#     ansible.builtin.copy:
+#       src: ./1_nginx.conf
+#       dest: /etc/nginx/nginx.conf
+
+#   - name: Restart service nginx
+#     ansible.builtin.service:
+#       name: nginx
+#       state: restarted
+
+# - hosts: net2
+#   become: yes
+#   tasks:
+#   - name: Copy nginx config file for net2 
+#     ansible.builtin.copy:
+#       src: ./2_nginx.conf
+#       dest: /etc/nginx/nginx.conf
+
+#   - name: Restart service nginx
+#     ansible.builtin.service:
+#       name: nginx
+#       state: restarted
+
+# - hosts: net3
+#   become: yes
+#   tasks:
+#   - name: Add "stretch-backports" to sources (required for HAProxy 1.8)
+#     apt_repository:
+#       repo: deb http://httpredir.debian.org/debian stretch-backports main
+#       state: present
+#       update_cache: yes
+
+#   - name: Install HAProxy
+#     apt:
+#       name: haproxy
+#       state: present
+#       default_release: stretch-backports
+#       cache_valid_time: 3600
+
+#   - name: Copy HAProxy config file for net2 
+#     ansible.builtin.copy:
+#       src: ./3_haproxy.conf
+#       dest: /etc/haproxy/haproxy.cfg
+
+#   - name: Restart HAProxy
+#     service:
+#       name: haproxy
+#       state: restarted

@@ -1,0 +1,117 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+
+  - name: Ensure that nano editor is installed.
+    apt: name=nano state=present
+
+  - name: Update the apt package index
+    become: yes
+    apt:
+      name: "*"
+      # state: latest
+      update_cache: yes
+      # force_apt_get: yes
+
+  - name: Install packages for apt add repository over HTTPS
+    become: yes
+    apt:
+      name: "{{ packagesdep }}"
+      force_apt_get: yes
+      state: latest
+      update_cache: yes
+    vars:
+      packagesdep:
+      - git
+      - apt-transport-https
+      - ca-certificates
+      - wget
+      - software-properties-common
+      # - gnupg2
+      - gnupg
+      - curl
+      - lsb-release
+
+  - name: Add Apt signing key from official docker repo
+    apt_key:
+      url: https://download.docker.com/linux/debian/gpg
+      state: present
+
+  - name: add docker official repository for Debian buster
+    apt_repository:
+      repo: deb [arch=amd64] https://download.docker.com/linux/debian buster stable
+      state: present
+
+  - name: Index new repo into the cache
+    become: yes
+    apt:
+      name: "*"
+      # state: latest
+      update_cache: yes
+      force_apt_get: yes
+
+  - name: actually install docker
+    apt:
+      name: "{{ packagesdep }}"
+      force_apt_get: yes
+      state: latest
+      update_cache: yes
+    vars:
+      packagesdep:
+      - docker-ce
+      - docker-ce-cli 
+      - containerd.io 
+      - docker-compose-plugin
+      - python3-setuptools
+      - python3-requests
+      - python3-pip
+      - python3-docker
+
+  - name: Change ssh config
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      regexp: '^PasswordAuthentication'
+      line: PasswordAuthentication yes
+    notify:
+      - Restart sshd
+  - name: 
+    debug:
+      msg: "{{ ansible_facts.all_ipv4_addresses[1] }}"
+
+  - name: Ensure docker-compose is installed and available
+    get_url:
+      url: https://github.com/docker/compose/releases/download/1.22.0/docker-compose-{{ ansible_system }}-{{ ansible_userspace_architecture }}
+      dest: /usr/local/bin/docker-compose
+      mode: 'u+x,g+x'
+
+  # - name: Copy docker-compose.yml file to the host
+  #   ansible.builtin.copy:
+  #     src: "docker-compose.yml"
+  #     dest: "~/"
+  #     owner: "vagrant"
+  #     group: "vagrant"
+  #     mode: "0644"
+
+  - name: Install docker python package
+    ansible.builtin.pip:
+      name: docker
+
+  # - name: Tear down existing services
+  #   docker_compose:
+  #     project_src: docker-compose
+  #     state: absent
+
+  - name: Create and start services
+    docker_compose:
+      project_src: docker-compose
+    register: output
+    become: true
+    vars:
+      ansible_python_interpreter: /bin/python3
+
+  handlers:
+  - name: Restart sshd
+    service:
+      name: sshd
+      state: restarted
