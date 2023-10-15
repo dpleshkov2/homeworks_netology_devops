@@ -39,3 +39,29 @@ variable "vms_ssh_root_key" {
   default     = "<your_ssh_ed25519_key>"
   description = "ssh-keygen -t ed25519"
 }
+
+###yandex_compute_image vars
+variable "vm_web_family" {
+  type        = string
+  default     = "ubuntu-2004-lts"
+  description = "yandex_compute_image family"
+}
+
+###yandex_compute_instance vars
+variable "vm_web_cores" {
+  type        = number
+  default     = "2"
+  description = "yandex_compute_instance cores"
+}
+
+variable "vm_web_memory" {
+  type        = number
+  default     = "1"
+  description = "yandex_compute_instance memory"
+}
+
+variable "vm_web_core_fraction" {
+  type        = number
+  default     = "20"
+  description = "yandex_compute_instance core_fraction"
+}
